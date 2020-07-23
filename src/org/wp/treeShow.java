@@ -11,18 +11,7 @@ import java.util.*;
 
 public class treeShow {
     public static void main(String[] args) {
-
         List<String> inputList = new ArrayList<>();
-
-        //第一个问题 正在想解决方法
-        //必须 按图的顺序 从上往下输入节点 的路径
-        // -> 的左侧一定要在之前出现过，不然会失效
-
-        //第二个问题 已经有方法可以解决了
-        //打印的箭头
-
-        //第三个问题 内部的部分 函数 和 类 的命名和使用方法有点乱
-        //结束前会修改
 
         inputList.add("fffff->ro");
         inputList.add("ro->fir");
@@ -30,7 +19,6 @@ public class treeShow {
         inputList.add("xw->y");
         inputList.add("xw->a");
         inputList.add("xw->z");
-
         inputList.add("a->aaaaaaa");
         inputList.add("z->e");
         inputList.add("y->f");
@@ -38,7 +26,7 @@ public class treeShow {
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
 
-        //t.printTree();
+        t.printTree();
 
         new myutil().print_MultiTree_List(t);
         new myutil().command_show_tree(t);
