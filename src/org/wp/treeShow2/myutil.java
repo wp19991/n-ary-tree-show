@@ -1,8 +1,7 @@
 package org.wp.treeShow2;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class myutil {
 
@@ -303,8 +302,8 @@ public class myutil {
      * @return 一颗 n 叉树
      */
     public MultiTree inputList_to_MultiTree(List<String> inputList) {
-        //List<String> okList = this.inputList_to_okList(inputList);
-        List<String> okList = inputList;
+        List<String> okList = this.inputList_to_okList(inputList);
+        //List<String> okList = inputList;
 
         MultiTree t = new MultiTree(new Node(okList.get(0).split("->")[0]));
 
@@ -328,66 +327,66 @@ public class myutil {
      *
      * @param inputList 用户输入的列表
      */
-    private List<String> inputList_to_okList(List<String> inputList) {
-        //test_use_print_list(inputList);
+    private List<String> inputList_to_okList(List<String> inputList){
+        List<String> temp = new ArrayList<String> ();
 
-        List<String> temp_list = new ArrayList<>(inputList);
 
-        //遍历每个元素
-        for (int i = 0; i < inputList.size(); i++) {
-            String this_temp_str = inputList.get(i);
-        }
+        HashMap<Integer,String > tem = new HashMap<Integer,String > ();
 
-        int pre_index = 0;
-        for (int wai = 0; wai < temp_list.size(); wai++) {
-            test_use_print_list(temp_list);
-            // 这个循环的下标
-            pre_index = wai;
-            //这个循环开始的 元素
-            String temp_list_str = temp_list.get(wai);
-            System.out.println("--这个循环的下标:" + pre_index + "-->这个循环开始的元素" + temp_list_str);
-
-            for (int i = pre_index; i < temp_list.size(); i++) {
-                //当前元素的开头
-                String temp_first_str = temp_list.get(i).split("->")[0];
-
-                //当前元素在这个列表里面出现的下标
-                int temp_first_index = from_list_get_first_index(temp_first_str, temp_list);
-                System.out.println("当前元素在这个列表里面出现的下标是：" + temp_first_index + "->(" + temp_list.get(i) + ")");
-
-                // 当前的元素 和 这个循环开始的元素 需要替换
-                // 当前元素在这个列表里面出现的下标 = 这个列表的大小
-
-                if (temp_first_index == -1) {
-                    // 交换这个两个元素
-                    swap_list_from_index(pre_index, i, temp_list);
-
-                    System.out.println(pre_index + "进行交换" + i);
-                    //test_use_print_list(temp_list);
-                    //break;
-                    //continue;
+        //先确定根 > 其他的第二个都没有 这个值的第一个
+        for (int i = 0; i < inputList.size(); i++){
+            boolean root_flag = false;
+            for (int j = 0; j < inputList.size(); j++){
+                if (i!=j){
+                    if (inputList.get(i).split("->")[0].equals(inputList.get(j).split("->")[1])){
+                        root_flag = false;
+                        break;
+                    }else {
+                        root_flag = true;
+                    }
                 }
-
-                if (temp_first_index != i & i != temp_list.size() - 1) {
-                    swap_list_from_index(temp_first_index + 1, i, temp_list);
-                    System.out.println(temp_first_index + 1 + "进行交换" + i);
-                }
-//
-//                if(temp_first_index >= i){
-//                    // 交换这个两个元素
-//                    swap_list_from_index(temp_first_index,i,temp_list);
-//                    System.out.println(temp_first_index+"进行交换"+i);
-//                    //break;
-//                }
-
-
+            }
+            if (root_flag) {
+                tem.put(0,inputList.get(i));
+                inputList.remove(i);
+                break;
             }
         }
 
-        //test_use_print_list(temp_list);
+        //从根开始在这个列表里面找后面的节点  有的话添加这个元素和ks，再ks++ ,然后移除这个元素
+        int ks = 1;
+        Queue<String> que= new LinkedList<String>();
+        que.add(tem.get(0));
+
+        while (!que.isEmpty()){
+            String front = que.poll();
+            //System.out.println(front);
+            //que.remove();
 
 
-        return temp_list;
+            for(int i = 0; i < inputList.size(); i++){
+                //如果font的第二个 在列表其他的第一个 添加到 map 里面
+
+                if (inputList.get(i).split("->")[0].equals(front.split("->")[1])){
+                    tem.put(ks,inputList.get(i));
+                    //System.out.println(ks+" que) -> "+inputList.get(i));
+                    inputList.remove(i);
+                    i--;
+                    que.add(tem.get(ks));
+                    //System.out.println(ks+" tem) -> "+tem.get(ks));
+                    ks++;
+                }
+            }
+        }
+
+        temp.add("root->"+tem.get(0).split("->")[0]);
+        for (int i = 0; i < tem.size(); i++) {
+            temp.add(tem.get(i));
+            //System.out.println(temp.get(i)+"===============");
+        }
+
+        //System.out.println("---+++++-----");
+        return temp;
     }
 
     /**
