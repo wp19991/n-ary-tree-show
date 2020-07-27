@@ -8,26 +8,23 @@ public class treeShow1 {
     public static void main(String[] args) {
         List<String> inputList = new ArrayList<>();
 
-        inputList.add("bb->cccc");
-        inputList.add("fffff->t");
-        inputList.add("bb->g");
-        inputList.add("cccc->k");
-        inputList.add("aa->xo");
-        inputList.add("xo->xx");
+        inputList.add("cc->qq");
+        inputList.add("aa->yy");
         inputList.add("aa->bb");
-        inputList.add("g->xh");
-        inputList.add("bb->fffff");
-        inputList.add("fffff->e");
-        inputList.add("cccc->d");
-        inputList.add("d->h");
-        inputList.add("o->aa");
-        inputList.add("aa->ll");
-        inputList.add("h->rr");
+        inputList.add("bb->cc");
+        inputList.add("bb->ee");
+        inputList.add("ff->jj");
+        inputList.add("cc->dd");
+        inputList.add("bb->ff");
+        inputList.add("aa->gg");
+
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
 
         //调试使用
         t.printTree();
+        System.out.println("------------");
+        new myutil().print_List_List_Node(t);
         System.out.println("------------");
 
 

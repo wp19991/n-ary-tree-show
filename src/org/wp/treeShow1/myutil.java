@@ -28,6 +28,52 @@ public class myutil {
         return t;
     }
 
+
+    /**
+     * 打印 横向向列表 调试使用
+     *
+     * @param t 输入一颗 MultiTree 的对象
+     */
+    public void print_List_List_Node(MultiTree t) {
+        //将树的结构 保存成竖向列表的形式
+        List<List<Node>> l = get_display_tree_list(t.root);
+
+        //将树结构的 竖向列表 变为 横向向列表
+        List<List<Node>> xz_display = xz_display_tree_list(l);
+
+        for (List<Node> nodes : xz_display) {
+            for (Node temp : nodes) {
+                System.out.print(temp.value + "\t");
+            }
+            System.out.println();
+        }
+
+    }
+
+    private List<List<Node>> xz_display_tree_list_new(List<List<Node>> l) {
+
+        //返回的横向向列表
+        List<List<Node>> xz_list_new = new ArrayList<>(l);
+
+
+        for (int i = l.size()-1; i >= 0; i--) {
+            //将当前的元素 添加到 右边是空，右边下面有元素 这个右边的地方
+            for (Node temp : l.get(i)) {
+                if (temp.value.equals("++")||temp.value.equals("#")){
+                    continue;
+                }
+                //temp
+
+            }
+
+
+        }
+
+
+        return xz_list_new;
+    }
+
+
     /**
      * 打印树的结构 横着显示
      * 表格数据 没有居中显示
@@ -40,19 +86,6 @@ public class myutil {
 
         //将树结构的 竖向列表 变为 横向向列表
         List<List<Node>> xz_display = xz_display_tree_list(l);
-
-
-        // 调试使用
-        /**/
-        //System.out.println("--+++++----");
-        //for (List<Node> nodes : xz_display) {
-        //    for (Node temp : nodes) {
-        //        System.out.print(temp.value + "\t");
-        //    }
-        //    System.out.println();
-        //}
-        //System.out.println("--+++++++++++++++++++++++=----");
-        /**/
 
 
         //每一列的字数
@@ -93,8 +126,8 @@ public class myutil {
                             sb_1.append("\\ ╔══");
                             sb_2.append("╰-║  ");
                         } else {
-                            sb_1.append("  ╔══");
-                            sb_2.append("--║  ");
+                            sb_1.append("\\ ╔══");
+                            sb_2.append("╰-║  ");
                         }
                     } else {
                         sb_1.append("\\ ╔══");
@@ -140,6 +173,7 @@ public class myutil {
      * 里面 k 是根节点
      * 最后形成符合生成 n叉树 的 用户输入的
      * ["k->a","a->b","a->c","c->b"]
+     *
      * @param inputList 用户输入的列表
      * @return 符合规定的输入列表
      */
@@ -172,6 +206,7 @@ public class myutil {
         }
 
         //从根开始在这个列表里面找后面的节点  有的话添加这个元素和ks，再ks++ ,然后移除这个元素
+        //根元素后面可以跟两个元素
         int ks = 1;
         Queue<String> queue = new LinkedList<String>();
         queue.add(hashMap.get(0));
@@ -180,6 +215,20 @@ public class myutil {
             String front = queue.poll();
 
             for (int i = 0; i < inputList.size(); i++) {
+
+                //如果font的第一个和根的第一个 添加到 map 里面
+                if (inputList.get(i).split("->")[0].equals(hashMap.get(0).split("->")[0])) {
+                    hashMap.put(ks, inputList.get(i));
+
+                    //哟个坑 remove在循环中 需要将 i--
+                    //因为for里面一直在计算这个列表的长度，会溢出
+                    inputList.remove(i);
+                    i--;
+
+                    queue.add(hashMap.get(ks));
+                    ks++;
+                    continue;
+                }
 
                 //如果font的第二个 在列表其他的第一个 添加到 map 里面
                 if (inputList.get(i).split("->")[0].equals(front.split("->")[1])) {
