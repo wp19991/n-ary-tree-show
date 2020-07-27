@@ -50,19 +50,20 @@ public class myutil {
 
     }
 
+    /**
+     * 辅助函数 变换旋转后显示的列表 使其更紧凑
+     * @param l 竖着旋转后显示的列表
+     */
     public void xz_display_tree_list_new(List<List<Node>> l) {
 
-        //先把所有的++ 和 # 改为 ##
+        //先把所有的## 和 ## 改为 ##
         for (List<Node> nodes : l) {
             for (Node node : nodes) {
-                if (node.value.equals("#") || node.value.equals("++")) {
+                if (node.value.equals("##")) {
                     node.value = "##";
                 }
             }
         }
-
-        //返回的横向向列表
-        List<List<Node>> xz_list_new = new ArrayList<>(l);
 
 
 //        for (List<Node> nodes : l) {
@@ -105,16 +106,17 @@ public class myutil {
                 int delect_lie = k;
 
 
-                for (int p = 0; p < l.size(); p++) {
-                    if (!l.get(p).get(k).value.equals("##")) {
+                for (List<Node> nodes : l) {
+                    if (!nodes.get(k).value.equals("##")) {
                         isdelect = false;
                         delect_lie = -1;
+                        break;
                     }
                 }
 
                 if (isdelect) {
-                    for (int p = 0; p < l.size(); p++) {
-                        l.get(p).remove(delect_lie);
+                    for (List<Node> nodes : l) {
+                        nodes.remove(delect_lie);
                     }
                 }
 
@@ -186,6 +188,7 @@ public class myutil {
                                 for (int houm = j; houm < xz_display.get(i).size(); houm++) {
                                     if (!xz_display.get(i).get(houm).value.equals("##")) {
                                         print_1 = false;
+                                        break;
                                     }
                                 }
                                 if (!print_1) {
@@ -193,8 +196,6 @@ public class myutil {
                                         xian_1.append("-");
                                     }
                                 }
-                                //print_1 = false;
-
                             }
                         }
                     }
@@ -217,38 +218,9 @@ public class myutil {
                         //如果这个元素的左边有元素
                         if (!xz_display.get(i).get(j - 1).value.equals("##")) {
                             //xian_1.append("     ");
-                            if(i!=0){
-                                if(xz_display.get(i-1).get(j - 1).value.equals("##")){
-                                    xian_1.append("-----");
-                                }else {
-                                    xian_1.append("     ");
-                                }
-                            }else {
-                                xian_1.append("     ");
-                            }
-
-
-                        } else {
-                            //如果这个元素的左边没有元素 上面没有元素
                             if (i != 0) {
                                 if (xz_display.get(i - 1).get(j - 1).value.equals("##")) {
-
-                                    if (i == 0) {
-                                        xian_1.append("     ");
-                                        //xian_2.append("+");
-                                    } else {
-                                        //如果这个个元素的上面有元素，线是直的
-                                        //如果这个个元素的上面没有元素，线是弯的
-                                        if (!xz_display.get(i - 1).get(j).value.equals("##")) {
-                                            xian_1.append("     ");
-                                        } else {
-                                            xian_1.append("-----");
-                                        }
-
-                                    }
-
-
-                                    //xian_1.append("-----");
+                                    xian_1.append("-----");
                                 } else {
                                     xian_1.append("     ");
                                 }
@@ -256,7 +228,24 @@ public class myutil {
                                 xian_1.append("     ");
                             }
 
-                            //xian_1.append("     ");
+                        } else {
+                            //如果这个元素的左边没有元素 上面没有元素
+                            if (i != 0) {
+                                if (xz_display.get(i - 1).get(j - 1).value.equals("##")) {
+
+                                    if (!xz_display.get(i - 1).get(j).value.equals("##")) {
+                                        xian_1.append("     ");
+                                    } else {
+                                        xian_1.append("-----");
+                                    }
+
+                                } else {
+                                    xian_1.append("     ");
+                                }
+                            } else {
+                                xian_1.append("     ");
+                            }
+
                         }
 
                     } else {
@@ -286,7 +275,6 @@ public class myutil {
                     sb_2.append("  ║  ");
                     sb_3.append("  ╚══");
                     for (int k = 0; k < temp.value.length(); k++) {
-                        //xian_1.append(" ");
                         if (k != 0) {
                             xian_1.append(" ");
                             xian_2.append(" ");
@@ -296,9 +284,6 @@ public class myutil {
                         sb_3.append("═");
                     }
                     sb_2.append(temp.value);
-
-
-
 
 
                     xian_1.append("   ");
@@ -436,7 +421,7 @@ public class myutil {
 
         int kong_ge = -1;
         for (Node node : temp_node_list) {
-            if (node.equals(new Node("#"))) {
+            if (node.equals(new Node("##"))) {
                 kong_ge++;
                 continue;
             }
@@ -446,7 +431,7 @@ public class myutil {
             }
             List<Node> temp_list = new ArrayList<>();
             for (int j = 0; j < kong_ge; j++) {
-                temp_list.add(new Node("#"));
+                temp_list.add(new Node("##"));
             }
             temp_list.add(node);
             list_displaytre.add(temp_list);
@@ -464,7 +449,7 @@ public class myutil {
      */
     private void displaytree_to_list(Node tree_root, int level, List<Node> list) {
         //递归函数
-        list.add(new Node("#"));
+        list.add(new Node("##"));
         for (int i = 0; i < tree_root.children.size(); i++) {
             Node t = tree_root.children.get(i);
 
@@ -507,7 +492,7 @@ public class myutil {
                     Node tem_node = nodes.get(i);
                     temp_list.add(tem_node);
                 } catch (Exception e) {
-                    temp_list.add(new Node("++"));
+                    temp_list.add(new Node("##"));
                 }
             }
             xz_list.add(temp_list);

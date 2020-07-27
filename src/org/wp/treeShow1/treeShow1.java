@@ -8,16 +8,19 @@ public class treeShow1 {
     public static void main(String[] args) {
         List<String> inputList = new ArrayList<>();
 
-        inputList.add("cc->qq");//
-        inputList.add("aa->yy");//
-        inputList.add("aa->bb");//
-        inputList.add("bb->cc");//
-        inputList.add("bb->ee");//
-        inputList.add("ff->jjjj");//
-        inputList.add("cc->dd");//
-        inputList.add("bb->ff");//
-        inputList.add("aa->gg");//
-        inputList.add("yy->zz");
+//        inputList.add("cc->qq");
+//        inputList.add("aa->yy");
+//        inputList.add("aa->bb");
+//        inputList.add("bb->cc");
+//        inputList.add("bb->ee");
+//        inputList.add("ff->jjjj");
+//        inputList.add("cc->dd");
+//        inputList.add("bb->ff");
+//        inputList.add("aa->gg");
+//        inputList.add("yy->zz");
+        inputList.add("select->first");
+        inputList.add("second->third");
+        inputList.add("select->second");
 
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
