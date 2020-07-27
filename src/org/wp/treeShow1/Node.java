@@ -17,6 +17,12 @@ public class Node {
         this.children = new ArrayList<Node>();
     }
 
+    public void setNode(Node o) {
+        this.value = o.value;
+        this.children = new ArrayList<Node>(o.children);
+        this.prev=o.prev;
+    }
+
 
     public boolean equals(Node o) {
         return this.value.equals(o.value);

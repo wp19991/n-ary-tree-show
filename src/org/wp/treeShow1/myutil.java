@@ -50,27 +50,88 @@ public class myutil {
 
     }
 
-    private List<List<Node>> xz_display_tree_list_new(List<List<Node>> l) {
+    public void xz_display_tree_list_new(List<List<Node>> l) {
+
+        //先把所有的++ 和 # 改为 ##
+        for (List<Node> nodes : l) {
+            for (Node node : nodes) {
+                if (node.value.equals("#") || node.value.equals("++")) {
+                    node.value = "##";
+                }
+            }
+        }
 
         //返回的横向向列表
         List<List<Node>> xz_list_new = new ArrayList<>(l);
 
 
-        for (int i = l.size()-1; i >= 0; i--) {
+//        for (List<Node> nodes : l) {
+//            for (Node temp : nodes) {
+//                System.out.print(temp.value + "\t");
+//            }
+//            System.out.println();
+//        }
+
+
+        for (int i = l.size() - 1; i >= 0; i--) {
             //将当前的元素 添加到 右边是空，右边下面有元素 这个右边的地方
-            for (Node temp : l.get(i)) {
-                if (temp.value.equals("++")||temp.value.equals("#")){
+            for (int k = 0; k < l.get(i).size() - 1; k++) {
+                Node temp = l.get(i).get(k);
+                if (temp.value.equals("##")) {
                     continue;
                 }
-                //temp
+                //最后一行不处理
+                if (i == l.size() - 1) {
+                    continue;
+                }
 
+                //temp
+                //处理倒数第二行和之前的
+                if (!l.get(i).get(k + 1).value.equals("##")) {
+                    continue;
+                }
+
+                if (!l.get(i + 1).get(k + 1).value.equals("##") && l.get(i).get(k + 1).value.equals("##")) {
+                    l.get(i).get(k + 1).setNode(l.get(i).get(k));
+                    l.get(i).get(k).setNode(new Node("##"));
+                    k++;
+                    //break;
+                }
             }
 
+            //每行结束 对整体进行统计删除  如果一列都是 ##  删除这一列
+            for (int k = 0; k < l.get(0).size(); k++) {
+                boolean isdelect = true;
+                int delect_lie = k;
+
+
+                for (int p = 0; p < l.size(); p++) {
+                    if (!l.get(p).get(k).value.equals("##")) {
+                        isdelect = false;
+                        delect_lie = -1;
+                    }
+                }
+
+                if (isdelect) {
+                    for (int p = 0; p < l.size(); p++) {
+                        l.get(p).remove(delect_lie);
+                    }
+                }
+
+            }
 
         }
 
 
-        return xz_list_new;
+//        System.out.println("--------------------");
+//        for (List<Node> nodes : l) {
+//            for (Node temp : nodes) {
+//                System.out.print(temp.value + "\t");
+//            }
+//            System.out.println();
+//        }
+
+
     }
 
 
@@ -87,13 +148,15 @@ public class myutil {
         //将树结构的 竖向列表 变为 横向向列表
         List<List<Node>> xz_display = xz_display_tree_list(l);
 
+        xz_display_tree_list_new(xz_display);
+
 
         //每一列的字数
         HashMap<Integer, Integer> pre = new HashMap<Integer, Integer>();
         for (int j = 0; j < xz_display.get(0).size(); j++) {
             for (List<Node> nodes : xz_display) {
                 Node temp = nodes.get(j);
-                if (temp.value.equals("#") || temp.value.equals("++")) {
+                if (temp.value.equals("##") || temp.value.equals("++")) {
                     continue;
                 }
                 pre.put(j, temp.value.length());
@@ -101,18 +164,47 @@ public class myutil {
         }
 
 
-        for (List<Node> nodes : xz_display) {
+        for (int i = 0; i < xz_display.size(); i++) {
+            StringBuilder xian_1 = new StringBuilder();
+            StringBuilder xian_2 = new StringBuilder();
             StringBuilder sb_1 = new StringBuilder();
             StringBuilder sb_2 = new StringBuilder();
             StringBuilder sb_3 = new StringBuilder();
 
-            for (int j = 0; j < nodes.size(); j++) {
-                Node temp = nodes.get(j);
+            for (int j = 0; j < xz_display.get(i).size(); j++) {
+                Node temp = xz_display.get(i).get(j);
 
-                if (temp.value.equals("#") || temp.value.equals("++")) {
+                if (temp.value.equals("##")) {
+
+                    boolean print_1 = true;
+                    //如果这个元素是 ## 且上面没有元素 则第一行为 ------
+                    if (i != 0) {
+                        if (j != 0) {
+                            if (xz_display.get(i).get(j).value.equals("##")
+                                    && xz_display.get(i - 1).get(j).value.equals("##")) {
+
+                                for (int houm = j; houm < xz_display.get(i).size(); houm++) {
+                                    if (!xz_display.get(i).get(houm).value.equals("##")) {
+                                        print_1 = false;
+                                    }
+                                }
+                                if (!print_1) {
+                                    for (int k = 0; k < 8 + pre.get(j); k++) {
+                                        xian_1.append("-");
+                                    }
+                                }
+                                //print_1 = false;
+
+                            }
+                        }
+                    }
 
 
                     for (int k = 0; k < 8 + pre.get(j); k++) {
+                        if (print_1) {
+                            xian_1.append(" ");
+                        }
+                        xian_2.append(" ");
                         sb_1.append(" ");
                         sb_2.append(" ");
                         sb_3.append(" ");
@@ -120,35 +212,108 @@ public class myutil {
 
                 } else {
 
-
+                    //如果这个元素的左边有元素
                     if (j != 0) {
-                        if (nodes.get(j - 1).value.equals("#") || nodes.get(j - 1).value.equals("++")) {
-                            sb_1.append("\\ ╔══");
-                            sb_2.append("╰-║  ");
+                        //如果这个元素的左边有元素
+                        if (!xz_display.get(i).get(j - 1).value.equals("##")) {
+                            //xian_1.append("     ");
+                            if(i!=0){
+                                if(xz_display.get(i-1).get(j - 1).value.equals("##")){
+                                    xian_1.append("-----");
+                                }else {
+                                    xian_1.append("     ");
+                                }
+                            }else {
+                                xian_1.append("     ");
+                            }
+
+
                         } else {
-                            sb_1.append("\\ ╔══");
-                            sb_2.append("╰-║  ");
+                            //如果这个元素的左边没有元素 上面没有元素
+                            if (i != 0) {
+                                if (xz_display.get(i - 1).get(j - 1).value.equals("##")) {
+
+                                    if (i == 0) {
+                                        xian_1.append("     ");
+                                        //xian_2.append("+");
+                                    } else {
+                                        //如果这个个元素的上面有元素，线是直的
+                                        //如果这个个元素的上面没有元素，线是弯的
+                                        if (!xz_display.get(i - 1).get(j).value.equals("##")) {
+                                            xian_1.append("     ");
+                                        } else {
+                                            xian_1.append("-----");
+                                        }
+
+                                    }
+
+
+                                    //xian_1.append("-----");
+                                } else {
+                                    xian_1.append("     ");
+                                }
+                            } else {
+                                xian_1.append("     ");
+                            }
+
+                            //xian_1.append("     ");
                         }
+
                     } else {
-                        sb_1.append("\\ ╔══");
-                        sb_2.append("╰-║  ");
+                        xian_1.append("     ");
                     }
 
-                    //sb_2.append("╰-║  ");
+
+                    //如果这个个元素的上面有元素//线是直的
+                    //如果是第一行 上面的线是平的
+
+                    if (i == 0) {
+                        xian_1.append("+");
+                        //xian_2.append("+");
+                    } else {
+                        //如果这个个元素的上面有元素，线是直的
+                        //如果这个个元素的上面没有元素，线是弯的
+                        if (!xz_display.get(i - 1).get(j).value.equals("##")) {
+                            xian_1.append("+");
+                        } else {
+                            xian_1.append("╮");
+                        }
+
+                    }
+
+                    xian_2.append("     |");
+                    sb_1.append("  ╔══");
+                    sb_2.append("  ║  ");
                     sb_3.append("  ╚══");
                     for (int k = 0; k < temp.value.length(); k++) {
+                        //xian_1.append(" ");
+                        if (k != 0) {
+                            xian_1.append(" ");
+                            xian_2.append(" ");
+                        }
+
                         sb_1.append("═");
                         sb_3.append("═");
                     }
                     sb_2.append(temp.value);
+
+
+
+
+
+                    xian_1.append("   ");
+                    xian_2.append("   ");
                     sb_1.append("══╗");
                     sb_2.append("  ║");
                     sb_3.append("══╝");
+
 
                 }
 
             }
 
+            System.out.println(xian_1);
+            System.out.println(xian_2);
             System.out.println(sb_1);
             System.out.println(sb_2);
             System.out.println(sb_3);
