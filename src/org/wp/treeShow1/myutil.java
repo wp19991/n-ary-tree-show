@@ -213,6 +213,14 @@ public class myutil {
 
                 } else {
 
+                    for (int k = 0; k < pre.get(j); k++) {
+                        xian_1.append(" ");
+                        xian_2.append(" ");
+                        sb_1.append(" ");
+                        sb_2.append(" ");
+                        sb_3.append(" ");
+                    }
+
                     //如果这个元素的左边有元素
                     if (j != 0) {
                         //如果这个元素的左边有元素
@@ -291,6 +299,18 @@ public class myutil {
                     sb_1.append("══╗");
                     sb_2.append("  ║");
                     sb_3.append("══╝");
+
+
+                    if(pre.get(j)>temp.value.length()){
+                        for (int k = 0; k <  pre.get(j)-temp.value.length(); k++) {
+                            xian_1.append(" ");
+                            xian_2.append(" ");
+                            sb_1.append(" ");
+                            sb_2.append(" ");
+                            sb_3.append(" ");
+                        }
+                    }
+
 
 
                 }

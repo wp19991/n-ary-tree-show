@@ -21,13 +21,14 @@ public class treeShow1 {
         inputList.add("select->first");
         inputList.add("second->third");
         inputList.add("select->second");
+        inputList.add("first->++");
 
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
 
         //调试使用
-        t.printTree();
-        System.out.println("------------");
+        //t.printTree();
+        //System.out.println("------------");
         //new myutil().print_List_List_Node(t);
         //System.out.println("------------");
 
