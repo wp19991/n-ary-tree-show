@@ -1,11 +1,12 @@
-package org.wp.treeShow1;
+package org.wp.treeShow;
 
 
 import java.util.*;
 
 
-public class treeShow1 {
+public class treeShow {
     public static void main(String[] args) {
+
         List<String> inputList = new ArrayList<>();
 
 //        inputList.add("cc->qq");
@@ -18,24 +19,19 @@ public class treeShow1 {
 //        inputList.add("bb->ff");
 //        inputList.add("aa->gg");
 //        inputList.add("yy->zz");
+
         inputList.add("select->first");
+        inputList.add("select->hhhh");
         inputList.add("second->third");
+        inputList.add("select->xxxx");
         inputList.add("select->second");
         inputList.add("first->++");
-
+        inputList.add("first->--");
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
 
-        //调试使用
-        //t.printTree();
-        //System.out.println("------------");
-        //new myutil().print_List_List_Node(t);
-        //System.out.println("------------");
-
-
-        //打印的结果2.0  横着显示  没有居中显示
+        //打印结果
         new myutil().displaytree_from_MultiTree_xz(t);
-
 
     }
 }

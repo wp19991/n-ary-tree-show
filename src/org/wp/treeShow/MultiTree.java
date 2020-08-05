@@ -1,12 +1,10 @@
-package org.wp.treeShow1;
+package org.wp.treeShow;
 
 import java.util.*;
 
 public class MultiTree {
 
     public Node root;
-    public List<List<Node>> res;
-    public List<String> paths;
 
     /**
      * 使用根节点初始化一颗 n 叉树
@@ -16,49 +14,6 @@ public class MultiTree {
     MultiTree(Node root) {
         root.prev = new Node("root");
         this.root = root;
-    }
-
-
-    /**
-     * 打印层次遍历的这个课树
-     */
-    public void printTree() {
-        this.levelOrder();//生成这颗树的层次遍历的 ArrayList
-
-        for (int i = 0; i < this.res.size(); i++) {
-            for (int j = 0; j < this.res.get(i).size(); j++) {
-                System.out.println(this.res.get(i).get(j).prev.value + "->" + this.res.get(i).get(j).value);
-            }
-            System.out.println("----");
-        }
-    }
-
-
-
-    /**
-     * 生成这颗树的层次遍历的 ArrayList
-     * [
-     * [(Node)"wxxx"],
-     * [(Node)"y",(Node)"a",(Node)"z",(Node)"kkk"],
-     * [(Node)"e",(Node)"f"]
-     * ]
-     */
-    public void levelOrder() {
-        this.res = new ArrayList<>();
-        helper(this.root, 0, this.res);
-    }
-
-    private void helper(Node node, int level, List<List<Node>> res) {
-        if (node == null) {
-            return;
-        }
-        if (res.size() == level) {
-            res.add(new ArrayList<>());
-        }
-        res.get(level).add(node);
-        for (Node child : node.children) {
-            helper(child, level + 1, res);
-        }
     }
 
     /**
@@ -91,7 +46,6 @@ public class MultiTree {
         }
         return false;
     }
-
 
 
     /**
@@ -140,6 +94,5 @@ public class MultiTree {
         }
 
     }
-
 
 }
