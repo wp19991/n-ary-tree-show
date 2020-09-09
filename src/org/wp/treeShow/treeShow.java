@@ -7,13 +7,14 @@ public class treeShow {
 
         List<String> inputList = new ArrayList<>();
 
+        inputList.add("first->--");
         inputList.add("select->first");
         inputList.add("select->hhhh");
         inputList.add("second->third");
         inputList.add("select->xxxx");
         inputList.add("select->second");
         inputList.add("first->++");
-        inputList.add("first->--");
+
 
         MultiTree t = new myutil().inputList_to_MultiTree(inputList);
 
